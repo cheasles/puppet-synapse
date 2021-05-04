@@ -1,0 +1,10 @@
+synapse::repo_manage: true
+synapse::repo_sources:
+  'synapse':
+    location: 'https://packages.matrix.org/debian/'
+    release: "%{facts.os.distro.codename}"
+    repos: 'main'
+    key: 'AAF9AE843A7584B5A3E4CD2BCF45A512DE2DA058'
+    include:
+      deb: true
+synapse::package_name: 'matrix-synapse-py3'

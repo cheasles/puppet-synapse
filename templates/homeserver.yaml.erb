@@ -1,0 +1,117 @@
+## Server ##
+
+server_name: "<%= @server_name %>"
+pid_file: /var/run/matrix-synapse.pid
+web_client: False
+soft_file_limit: 0
+
+## Ports ##
+
+listeners:
+  - port: <%= @listen_port %>
+    tls: false
+    bind_addresses: ['<%= @listen_address %>']
+    type: http
+    x_forwarded: false
+
+    resources:
+      - names: [client]
+        compress: true
+
+## Database ##
+
+database:
+  name: "<%= @database_name %>"
+  args:
+<% @database_args.each do |name, value| -%>
+    <%= name %>: <%= value %>
+<% end -%>
+
+## Performance ##
+
+event_cache_size: "10K"
+
+## Ratelimiting ##
+
+rc_messages_per_second: 0.2
+rc_message_burst_count: 10.0
+federation_rc_window_size: 1000
+federation_rc_sleep_limit: 10
+federation_rc_sleep_delay: 500
+federation_rc_reject_limit: 50
+federation_rc_concurrent: 3
+
+## Files ##
+
+media_store_path: "<%= @media_store_path %>"
+uploads_path: "<%= @uploads_path %>"
+max_upload_size: "10M"
+max_image_pixels: "32M"
+dynamic_thumbnails: false
+
+# List of thumbnail to precalculate when an image is uploaded.
+thumbnail_sizes:
+- width: 32
+  height: 32
+  method: crop
+- width: 96
+  height: 96
+  method: crop
+- width: 320
+  height: 240
+  method: scale
+- width: 640
+  height: 480
+  method: scale
+- width: 800
+  height: 600
+  method: scale
+
+url_preview_enabled: False
+max_spider_size: "10M"
+
+## Registration ##
+
+enable_registration: <% if @registration_enabled %>True<% else %>False<% end %>
+registration_shared_secret: "<%= @registration_secret %>"
+bcrypt_rounds: 12
+allow_guest_access: False
+enable_group_creation: true
+
+# The list of identity servers trusted to verify third party
+# identifiers by this server.
+#
+# Also defines the ID server which will be called when an account is
+# deactivated (one will be picked arbitrarily).
+#trusted_third_party_id_servers:
+#    - matrix.org
+#    - vector.im
+
+## Metrics ###
+
+enable_metrics: False
+report_stats: False
+
+## API Configuration ##
+
+room_invite_state_types:
+    - "m.room.join_rules"
+    - "m.room.canonical_alias"
+    - "m.room.avatar"
+    - "m.room.name"
+
+app_service_config_files: []
+
+macaroon_secret_key: "<%= @macaroon_secret_key %>"
+expire_access_token: False
+
+## Signing Keys ##
+
+signing_key_path: "/etc/matrix-synapse/homeserver.signing.key"
+old_signing_keys: {}
+key_refresh_interval: "1d" # 1 Day.
+
+# The trusted servers to download signing keys from.
+
+password_config:
+   enabled: true
