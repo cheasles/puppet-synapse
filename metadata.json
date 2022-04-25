@@ -1,6 +1,6 @@
 {
   "name": "cheasles-synapse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "cheasles",
   "summary": "Installs and configures Matrix Synapse",
   "license": "Apache-2.0",
